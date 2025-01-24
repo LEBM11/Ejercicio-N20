@@ -1,12 +1,12 @@
 import Express, { Router } from 'express';
 import cors from 'cors'
-import RouteCliente from './router/Clientes.js';
-// import RouteInventario from './router/inventario.js';
+import RouteCliente from './Router/Cliente.js';
+import RouteInventario from './Router/Inventario.js';
 
 class Server{
     constructor(){
         this.app = Express();
-        this.puerto = 3000;
+        this.puerto = 7000;
         this.middleware();
         this.rutas();
     }
@@ -24,7 +24,7 @@ class Server{
 
     rutas(){
         this.app.use("/api/clientes", new RouteCliente().config());
-        // this.app.use("/api/inventario",RouteInventario.config());
+        this.app.use("/api/inventario", new RouteInventario().config());
     }
 }
 

@@ -1,53 +1,36 @@
 import Mongo from "./MongoDB.js";
 
-class Modelo{
-    constructor(){
-        this.DB =new Mongo()
+class Modelo {
+    constructor() {
+        this.DB = new Mongo();
     }
-    
-    buscarClientes = async() => {
-        console.log(Mongo.estado)
-        try{
-            return await Mongo.db.collection('Cliente').toArray();
-        }catch(err){
-            console.error('Error al buscar cliente', err.message);
-        }
-}
 
-    BuscarCliente = async(cliente) => {
+    async buscarClientes() {
+        if (!Mongo.db) throw new Error('DAO sin conexión a MongoDB');
+        
         try {
-            if (!Mongo.estado) throw new Error('DAO sin conexión a MongoDB');
-            
-            if (!cliente) {
-                return await this.buscarClientes();
-            }
-            
-        const Clientes = await Mongo.db.collection('Cliente')
-        .find({ $and:[{edad:{$eq: cliente.Edad}}, {Nombre: cliente.Nombre}] }).toArray(((err, result) => {
-                if (err) throw err;
-                console.log(result);
-                return Clientes;
-        }));
+            const clientes = await Mongo.db.collection('clientes').find().toArray();
+            console.log('Clientes encontrados:', clientes); 
+            return clientes;
         } catch (err) {
-            console.error('Error al buscar cliente:', err.message);
+            console.error('Error al buscar clientes:', err.message);
             throw err;
         }
     }
 
-    crearCliente = async(cliente) => {
-        if (!Mongo.estado) throw new Error('DAO sin conexión a MongoDB');
-        const resultado = await this.db.db.collection('Cliente').insertOne(cliente);
-        return resultado;
+    async crearCliente(cliente) {
+        if (!Mongo.db) throw new Error('DAO sin conexión a MongoDB');
+
+        try {
+            console.log('Creando cliente:', cliente);
+            const resultado = await Mongo.db.collection('clientes').insertOne(cliente);
+            console.log('Cliente creado:', resultado);
+            return resultado;
+        } catch (err) {
+            console.error('Error al crear cliente:', err.message);
+            throw err;
+        }
     }
-
-    actualizarCliente = async(cliente) => {
-        if (!Mongo.estado) throw new Error('DAO sin conexión a MongoDB');
-        const resultado = await this.db.db.collection('Cliente').updateOne({ Nombre: cliente }, { $set: cliente });
-        return resultado;    }
-
-    eliminarCliente = async(cliente) => {
-        if (!Mongo.estado) throw new Error('DAO sin conexión a MongoDB');
-        const resultado = await this.db.db.collection('Cliente').deleteOne({ Nombre: cliente});    }
 }
 
 export default Modelo;

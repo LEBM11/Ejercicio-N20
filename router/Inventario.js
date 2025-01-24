@@ -1,18 +1,19 @@
-import {Controlador} from "../controlador/Inventario.js";
-import server from "../main.js";
+import Controlador from "../Controlador/Inventario.js";
+import Express from "express"
 
-class Inventario{
+class Router{
     constructor(){
         this.controlador = new Controlador()
-        this.route = server.app.route();
     }
 
     config(){
-        route.get("/Inventario", this.controlador.BuscarCliente);
-        router.post("/Inventario", this.controlador.crearCliente);
-        router.put("/Inventario", this.controlador.actualizarCliente);
-        router.delete("/Inventario", this.controlador.eliminarCliente);
+        const router = Express.Router();
+        router.get("/", this.controlador.buscarProductos);
+        router.post("/", this.controlador.crearProducto);
+        // router.put("/Inventario", this.controlador.actualizarCliente);
+        // router.delete("/Inventario", this.controlador.eliminarCliente);
+        return router
     };
 }
 
-export default Inventario;
+export default Router;
