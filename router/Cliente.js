@@ -10,8 +10,6 @@ class Route {
         const router = Express.Router();
         router.get("/", this.Controlador.buscarClientes);
         router.post("/", this.Controlador.crearCliente);
-        /* router.put("/", this.controlador.actualizarCliente);
-        router.delete("/", this.controlador.eliminarCliente); */
         return router;
     }
 }
